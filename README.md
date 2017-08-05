@@ -1,28 +1,21 @@
-# A2Aop
+### Aspect oriented programming example in Angular 2 - 4 -->
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.7.
+This is an example about separation of concerns in Angular applications. This example is quite simple and maybe cannot be a solution for complex problems. Learn more about https://en.wikipedia.org/wiki/Aspect-oriented_programming
 
-## Development server
+This example is about removing infrastructure code from components by applying abstraction and modularity using AOP technique.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The following example is about a component that must contain a list of peoples, simple as that. There are hundreds of approaches but many of them do not apply separation of concerns and code readability.. and probably, if you have to repeat that process in different scenarios you will run duplication and code scattering problems.
 
-## Code scaffolding
+##### There we go:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- create a component (AppComponent)
+- describe a Pattern (Interface + Advice) of (component that must trigger an ajax request and receive a response)
+- create an Interface called (ResourceContainer)
+- create behavior (Advice) called (ResourceContainerBehavior)
+- create a service that fits that behavior (service must fit Behavior rather than **component needs**)
+- our component should implement ResourceContainer
+- then our ResourceContainerBehavior should be declared as a trigger of the needed action
 
-## Build
+##### Explanation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+... todo
