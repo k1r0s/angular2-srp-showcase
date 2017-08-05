@@ -16,6 +16,15 @@ The following example is about a component that must contain a list of peoples, 
 - our component should implement ResourceContainer
 - then our ResourceContainerBehavior should be declared as a trigger of the needed action
 
-##### Explanation
+##### See in action
+
+```bash
+git clone https://github.com/k1r0s/angular2-aop-showcase.git
+cd angular2-aop-showcase
+npm install
+ng serve
+```
+
+##### Detailed Explanation
 
 ... todo
