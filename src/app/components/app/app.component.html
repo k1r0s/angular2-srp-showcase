@@ -1,0 +1,6 @@
+<md-toolbar>User list</md-toolbar>
+<div>
+  <md-list>
+    <md-list-item (click)="selectUser(user)" *ngFor="let user of userList">{{user.name}}</md-list-item>
+  </md-list>
+</div>
