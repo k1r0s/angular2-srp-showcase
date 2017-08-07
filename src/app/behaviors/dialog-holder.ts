@@ -1,5 +1,5 @@
 import { MdDialog, MdDialogRef } from "@angular/material"
-import { afterMethod } from "kaop-ts"
+import { afterMethod } from "../../../kaop-ts"
 
 export interface DialogHolder {
   dialogFactory: MdDialog

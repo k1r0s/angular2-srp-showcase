@@ -1,5 +1,5 @@
 import { CommonRequest } from "../services/common-request.service"
-import { beforeMethod } from "kaop-ts"
+import { beforeMethod } from "../../../kaop-ts"
 
 export interface ResourceContainer {
   service: CommonRequest
