@@ -8,13 +8,56 @@ The following example is about a component that must contain a list of peoples, 
 
 ##### There we go:
 
+## async calls
+
 - create a component (AppComponent)
 - describe a Pattern (Interface + Advice) of (component that must trigger an ajax request and receive a response)
 - create an Interface called (ResourceContainer)
+```typescript
+export interface ResourceContainer {
+  service: CommonRequest
+  resourceLoad(data?: any[]): void
+}
+```
 - create behavior (Advice) called (ResourceContainerBehavior)
+```typescript
+export const ResourceContainerBehavior = beforeMethod<ResourceContainer, "resourceLoad">(function(meta) {
+  meta.scope.service.getResource().toPromise().then((data) => {
+    meta.args.push(data)
+    this.next()
+  })
+})
+```
 - create a service that fits that behavior (service must fit Behavior rather than **component needs**)
 - our component should implement ResourceContainer
-- then our ResourceContainerBehavior should be declared as a trigger of the needed action
+- then our ResourceContainerBehavior should be declared only at `resourceLoad` method which is defined as the only trigger for that action (customizable).
+
+## dialog
+
+- describe a pattern that dialog holders must implement
+- create an interface called DialogHolder
+```typescript
+export interface DialogHolder {
+  dialogFactory: MdDialog
+  dialogRef: MdDialogRef<any>
+  onDialogClose?(): void
+}
+```
+- describe a Pattern for that components
+```typescript
+export const OpenDialogBehavior = (dialogComponent) => {
+  return afterMethod<DialogHolder>(function(meta) {
+    meta.scope.dialogRef = meta.scope.dialogFactory.open(dialogComponent, { data: meta.result })
+    if (typeof meta.scope.onDialogClose === "function") {
+      meta.scope.dialogRef.afterClosed()
+      .subscribe(meta.scope.onDialogClose.bind(meta.scope))
+    }
+  })
+}
+```
+- our component should implement DialogHolder
+- in this case any method can trigger OpenDialogBehavior so we need to decorate that method, that's all. Note that in the advice we check if `onDialogClose` is defined on annotated instance we subscribe that function.
+ 
 
 ##### See in action
 
