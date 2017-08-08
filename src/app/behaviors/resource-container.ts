@@ -6,7 +6,7 @@ export interface ResourceContainer {
   resourceLoad(data?: any[]): void
 }
 
-export const ResourceContainerBehavior = beforeMethod<ResourceContainer, "resourceLoad">(function(meta){
+export const ResourceContainerBehavior = beforeMethod<ResourceContainer, "resourceLoad">(function(meta) {
   meta.scope.service.getResource().toPromise().then((data) => {
     meta.args.push(data)
     this.next()
