@@ -17,7 +17,6 @@ export const OpenDialogBehavior = (dialogComponent) => {
   })
 }
 
-// not used
 export const CloseDialogBehavior = () => {
   return afterMethod<DialogHolder>(function(meta) {
     meta.scope.dialogRef.close(meta.result)
