@@ -14,14 +14,14 @@ The following example is about a component that must contain a list of peoples, 
 - describe a Pattern (Interface + Advice) of (component that must trigger an ajax request and receive a response)
 - create an Interface called (ResourceContainer)
 ```typescript
-export interface ResourceContainer {
+export interface InitResourceContainer extends OnInit {
   service: CommonRequest
-  resourceLoad(data?: any[]): void
+  ngOnInit(data?: any[]): void
 }
 ```
 - create behavior (Advice) called (ResourceContainerBehavior)
 ```typescript
-export const ResourceContainerBehavior = beforeMethod<ResourceContainer, "resourceLoad">(function(meta) {
+export const ResourceContainerBehavior = beforeMethod<InitResourceContainer, "ngOnInit">(function(meta) {
   meta.scope.service.getResource().toPromise().then((data) => {
     meta.args.push(data)
     this.next()
@@ -29,8 +29,8 @@ export const ResourceContainerBehavior = beforeMethod<ResourceContainer, "resour
 })
 ```
 - create a service that fits that behavior (service must fit Behavior rather than **component needs**)
-- our component should implement ResourceContainer
-- then our ResourceContainerBehavior should be declared only at `resourceLoad` method which is defined as the only trigger for that action (customizable).
+- our component should implement InitResourceContainer
+- then our ResourceContainerBehavior should be declared only at `ngOnInit` method which is defined as the only trigger for that action (customizable).
 
 ## dialog
 
@@ -45,9 +45,14 @@ export interface DialogHolder {
 ```
 - describe a Pattern for that components
 ```typescript
-export const OpenDialogBehavior = (dialogComponent) => {
+export const OpenDialogBehavior = (dialogComponent, errorDialogComponent = ErrorDialogComponent) => {
   return afterMethod<DialogHolder>(function(meta) {
-    meta.scope.dialogRef = meta.scope.dialogFactory.open(dialogComponent, { data: meta.result })
+    
+    meta.scope.dialogRef = meta.scope.dialogFactory.open(
+      meta.exception ? errorDialogComponent : dialogComponent, 
+      { data: meta.result }
+    )
+    
     if (typeof meta.scope.onDialogClose === "function") {
       meta.scope.dialogRef.afterClosed()
       .subscribe(meta.scope.onDialogClose.bind(meta.scope))
@@ -57,6 +62,7 @@ export const OpenDialogBehavior = (dialogComponent) => {
 ```
 - our component should implement DialogHolder
 - in this case any method can trigger OpenDialogBehavior so we need to decorate that method, that's all. Note that in the advice we check if `onDialogClose` is defined on annotated instance we subscribe that function.
+- also if an exception is declared by another advice then errorDialogComponent will be rendered instead.
  
 
 ##### See in action
