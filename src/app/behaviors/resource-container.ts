@@ -9,7 +9,7 @@ export interface InitResourceContainer extends OnInit {
 
 export const ResourceContainerBehavior = beforeMethod<InitResourceContainer, "ngOnInit">(function(meta) {
   meta.scope.service.getResource().toPromise().then((data) => {
-    meta.args.push(data)
+    meta.args[0] = data
     this.next()
   })
 })

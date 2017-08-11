@@ -9,6 +9,7 @@ import { ErrorDialogComponent } from "./components/error-dialog/error-dialog.com
 
 import { AppComponent } from './components/app/app.component';
 import { UserRepository } from './services/user-repository.service';
+import { CommonCache } from './services/common-cache.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,10 @@ import { UserRepository } from './services/user-repository.service';
     BrowserModule,
     NoopAnimationsModule
   ],
-  providers: [UserRepository],
+  providers: [
+    UserRepository,
+    CommonCache,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
