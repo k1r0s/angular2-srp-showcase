@@ -11,7 +11,7 @@ export interface InitResourceContainer<M = any> extends OnInit {
 export const ResourceContainerBehavior = beforeMethod<InitResourceContainer, "ngOnInit">(function(meta) {
   const resourcePromise = meta.scope.service.getResource().toPromise()
 
-  if ('onResourceFulfit' in meta.scope) {
+  if (typeof meta.scope.onResourceFulfit === "function") {
     resourcePromise.then(meta.scope['onResourceFulfit'].bind(meta.scope))
   }
 
