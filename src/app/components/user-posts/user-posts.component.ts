@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from "@angular/material"
-import { InitResourceContainer, ResourceContainerBehavior } from '../../behaviors/resource-container';
+import { InitResourceContainer } from '../../behaviors/resource-container';
 import { Post } from '../../models/post';
 import { PostRepository } from '../../services/post-repository.service';
-import { ArgsCacheReader , ArgsCacheWriter , CacheContainer } from '../../behaviors/cache-holder';
-import { ShowLoading , LoadingDialog , HideLoading } from '../../behaviors/loading-dialog';
+import { CacheContainer } from '../../behaviors/cache-holder';
+import { LoadingDialog } from '../../behaviors/loading-dialog';
 import { CommonCache } from '../../services/common-cache.service';
 import { WritersComponent } from '../writers/writers.component';
 import { User } from '../../models/user';
+import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'user-posts',
@@ -35,14 +36,25 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
     this.fetchPosts(this.selectedUser.id)
   }
 
-  @ArgsCacheReader({ argDriverIndex: 0 })
-  @ShowLoading
-  @ResourceContainerBehavior
-  @ArgsCacheWriter({ argDriverIndex: 0 })
   private fetchPosts(userId: number, data?: Post[]) {
-    this.userPostList = data
-  }
+    const key: string = `${UserPostsComponent.name}//fetchPosts//${userId}`
+    const result = this.cacheSrv.get(key)
+    if (result) {
+      this.userPostList = result
+    } else {
+      setTimeout(() => {
+        this.loadingDialogRef = this.dialogFactory.open(
+          LoadingDialogComponent, { disableClose: true }
+        )
+      })
 
-  @HideLoading
-  public onResourceFulfit () {}
+      const resourcePromise = this.service.getResource(userId.toString()).toPromise()
+
+      resourcePromise.then((data) => {
+        this.cacheSrv.set(key, data)
+        this.userPostList = data
+        this.loadingDialogRef.close()
+      })
+    }
+  }
 }
