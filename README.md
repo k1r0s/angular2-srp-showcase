@@ -14,15 +14,20 @@ The following example is about a component that must contain a list of peoples, 
 - describe a Pattern (Interface + Advice) of (component that must trigger an ajax request and receive a response)
 - create an Interface called (ResourceContainer)
 ```typescript
-export interface InitResourceContainer extends OnInit {
-  service: CommonRequest
-  ngOnInit(data?: any[]): void
+export interface InitResourceContainer<M = any> {
+  service: CommonRequest,
+  servicePath?: string
+  onResourceFulfit?(data?: M[]): void
 }
 ```
 - create behavior (Advice) called (ResourceContainerBehavior)
 ```typescript
-export const ResourceContainerBehavior = beforeMethod<InitResourceContainer, "ngOnInit">(function(meta) {
-  meta.scope.service.getResource().toPromise().then((data) => {
+export const ResourceContainerBehavior = beforeMethod<InitResourceContainer>(function(meta) {
+  const resourcePromise = meta.scope.service.getResource(meta.args[0] || meta.scope.servicePath).toPromise()
+  if (typeof meta.scope.onResourceFulfit === "function") {
+    resourcePromise.then(meta.scope['onResourceFulfit'].bind(meta.scope))
+  }
+  resourcePromise.then((data) => {
     meta.args.push(data)
     this.next()
   })
@@ -75,7 +80,7 @@ npm install
 ng serve
 ```
 
-By default subsequent calls are cached by `cache-holder.ts`, to remove cache type `delete localStorage['123123::AppComponent::ngOnInit']` on the js console.
+By default subsequent calls are cached by `cache-holder.ts`, look over application tab in developer tools to remove cache.
 
 ##### Detailed Explanation
 
