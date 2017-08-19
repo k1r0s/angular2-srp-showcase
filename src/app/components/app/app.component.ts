@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { MdDialog, MdDialogRef } from "@angular/material"
 import { ResourceContainerBehavior, InitResourceContainer } from "../../behaviors/resource-container"
 import { ReturnException } from "../../behaviors/return-exception"
@@ -9,31 +9,39 @@ import { UserDialogComponent } from "../user-dialog/user-dialog.component"
 import { UserRepository } from "../../services/user-repository.service"
 import { CommonCache } from "../../services/common-cache.service"
 import { User } from "../../models/user"
+import { LoadingDialog , ShowLoading, HideLoading } from '../../behaviors/loading-dialog';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements InitResourceContainer, CacheContainer, DialogHolder {
+export class AppComponent implements LoadingDialog, InitResourceContainer<User>, CacheContainer, DialogHolder {
+
   public userList: User[] = []
   public dialogRef: MdDialogRef<UserDialogComponent>
+  public loadingDialogRef: MdDialogRef<any>
   public forbiddenCity = 'South Elvis'
 
   private static CACHE_KEY = '123123'
+
   constructor(
-    public service: UserRepository, 
-    public cacheSrv: CommonCache, 
+    public service: UserRepository,
+    public cacheSrv: CommonCache,
     public dialogFactory: MdDialog
   ) {}
 
   @CacheReader(AppComponent.CACHE_KEY)
+  @ShowLoading
   @ResourceContainerBehavior
   @ResourceParserBehavior(AppComponent.mapper)
   @CacheWriter(AppComponent.CACHE_KEY)
   public ngOnInit(data: User[]) {
     this.userList = data
   }
+
+  @HideLoading
+  public onResourceFulfit() {}
 
   private static mapper = (user: User) => {
     delete user.username

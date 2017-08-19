@@ -10,15 +10,18 @@ import { ErrorDialogComponent } from "./components/error-dialog/error-dialog.com
 import { AppComponent } from './components/app/app.component';
 import { UserRepository } from './services/user-repository.service';
 import { CommonCache } from './services/common-cache.service';
+import { LoadingDialogComponent } from './components/loading-dialog/loading-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserDialogComponent,
+    LoadingDialogComponent,
     ErrorDialogComponent
   ],
   entryComponents: [
     UserDialogComponent,
+    LoadingDialogComponent,
     ErrorDialogComponent
   ],
   imports: [

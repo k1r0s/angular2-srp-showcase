@@ -2,9 +2,9 @@
 <div>
   <md-list>
     <md-list-item
-    *ngFor="let user of userList" 
+    *ngFor="let user of userList"
     [ngClass]="{'warning': user.address.city === forbiddenCity}"
-    (click)="selectUser(user)" 
+    (click)="selectUser(user)"
     >{{user.name}}</md-list-item>
   </md-list>
 </div>

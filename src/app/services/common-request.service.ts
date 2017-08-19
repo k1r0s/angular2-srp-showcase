@@ -13,6 +13,7 @@ export abstract class CommonRequest {
     return this.curr = this.http
         .get(this.api + this.url)
         .share()
+        .delay(2000)
         .map(res => res.json())
         .catch(this.handleError)
   }

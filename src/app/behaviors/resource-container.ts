@@ -2,14 +2,22 @@ import { CommonRequest } from "../services/common-request.service"
 import { OnInit } from '@angular/core';
 import { beforeMethod } from "kaop-ts"
 
-export interface InitResourceContainer extends OnInit {
+export interface InitResourceContainer<M = any> extends OnInit {
   service: CommonRequest
-  ngOnInit(data?: any[]): void
+  onResourceFulfit?(data?: M[]): void
+  ngOnInit(data?: M[]): void
 }
 
 export const ResourceContainerBehavior = beforeMethod<InitResourceContainer, "ngOnInit">(function(meta) {
-  meta.scope.service.getResource().toPromise().then((data) => {
+  const resourcePromise = meta.scope.service.getResource().toPromise()
+
+  if ('onResourceFulfit' in meta.scope) {
+    resourcePromise.then(meta.scope['onResourceFulfit'].bind(meta.scope))
+  }
+
+  resourcePromise.then((data) => {
     meta.args[0] = data
     this.next()
   })
+
 })
