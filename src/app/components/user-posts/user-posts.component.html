@@ -1,0 +1,7 @@
+<h4>Posts from {{selectedUser.name}}</h4>
+<div
+*ngFor="let post of userPostList"
+>
+  <h5>{{post.title}} - {{post.id}}</h5>
+  <p>{{post.body}}</p>
+</div>

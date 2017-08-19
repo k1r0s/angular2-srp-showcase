@@ -5,18 +5,24 @@ export interface CacheContainer {
   cacheSrv: CommonCache
 }
 
-export function CacheReader(privateKey) {
+export interface CacheOpts {
+  argDriverIndex: number
+}
+
+export function ArgsCacheReader(cacheOpts?: CacheOpts) {
   return beforeMethod<CacheContainer>(function(meta) {
-    const key: string = `${privateKey}::${meta.target.constructor.name}::${meta.propertyKey}`
-    meta.args[0] = meta.scope.cacheSrv.get(key)
-    if (meta.args[0]) { this.break() }
+    const key: string = `${meta.target.constructor.name}//${meta.propertyKey}//${cacheOpts ? meta.args[cacheOpts.argDriverIndex] : ''}`
+    const result = meta.scope.cacheSrv.get(key)
+    if (result) {
+      meta.args = result
+      this.break()
+    }
   })
 }
 
-export function CacheWriter(privateKey) {
+export function ArgsCacheWriter(cacheOpts?: CacheOpts) {
   return beforeMethod<CacheContainer>(function(meta) {
-    const key: string = `${privateKey}::${meta.target.constructor.name}::${meta.propertyKey}`
-    meta.scope.cacheSrv.set(key, meta.args[0])
+    const key: string = `${meta.target.constructor.name}//${meta.propertyKey}//${cacheOpts ? meta.args[cacheOpts.argDriverIndex] : ''}`
+    meta.scope.cacheSrv.set(key, meta.args)
   })
 }
-

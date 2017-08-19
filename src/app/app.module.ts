@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -7,16 +8,22 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
 import { ErrorDialogComponent } from "./components/error-dialog/error-dialog.component"
 
-import { AppComponent } from './components/app/app.component';
+import { WritersComponent } from './components/writers/writers.component';
 import { UserRepository } from './services/user-repository.service';
+import { PostRepository } from './services/post-repository.service';
 import { CommonCache } from './services/common-cache.service';
 import { LoadingDialogComponent } from './components/loading-dialog/loading-dialog.component';
+import { appRoutes } from './app.routes';
+import { UserPostsComponent } from './components/user-posts/user-posts.component';
+import { MainComponent } from './main.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    MainComponent,
+    WritersComponent,
     UserDialogComponent,
     LoadingDialogComponent,
+    UserPostsComponent,
     ErrorDialogComponent
   ],
   entryComponents: [
@@ -25,6 +32,7 @@ import { LoadingDialogComponent } from './components/loading-dialog/loading-dial
     ErrorDialogComponent
   ],
   imports: [
+    RouterModule.forRoot(appRoutes),
     HttpModule,
     MaterialModule,
     BrowserModule,
@@ -32,8 +40,9 @@ import { LoadingDialogComponent } from './components/loading-dialog/loading-dial
   ],
   providers: [
     UserRepository,
+    PostRepository,
     CommonCache,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [MainComponent]
 })
 export class AppModule { }
