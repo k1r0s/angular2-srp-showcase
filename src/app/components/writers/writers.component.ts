@@ -36,7 +36,7 @@ export class WritersComponent implements LoadingDialog, InitResourceContainer<Us
 
   public ngOnInit() {
 
-    const key: string = `${WritersComponent.name}//ngOnInit//`
+    const key: string = `${WritersComponent.name}||ngOnInit||`
     const result = this.cacheSrv.get(key)
     if (result) {
       this.cacheSrv.set(WritersComponent.USER_LIST, result)

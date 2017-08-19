@@ -37,7 +37,7 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
   }
 
   private fetchPosts(userId: number, data?: Post[]) {
-    const key: string = `${UserPostsComponent.name}//fetchPosts//${userId}`
+    const key: string = `${UserPostsComponent.name}||fetchPosts||${userId}`
     const result = this.cacheSrv.get(key)
     if (result) {
       this.userPostList = result
