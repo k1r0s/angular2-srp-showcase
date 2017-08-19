@@ -47,12 +47,12 @@ export interface DialogHolder {
 ```typescript
 export const OpenDialogBehavior = (dialogComponent, errorDialogComponent = ErrorDialogComponent) => {
   return afterMethod<DialogHolder>(function(meta) {
-    
+
     meta.scope.dialogRef = meta.scope.dialogFactory.open(
-      meta.exception ? errorDialogComponent : dialogComponent, 
+      meta.exception ? errorDialogComponent : dialogComponent,
       { data: meta.result }
     )
-    
+
     if (typeof meta.scope.onDialogClose === "function") {
       meta.scope.dialogRef.afterClosed()
       .subscribe(meta.scope.onDialogClose.bind(meta.scope))
@@ -63,7 +63,8 @@ export const OpenDialogBehavior = (dialogComponent, errorDialogComponent = Error
 - our component should implement DialogHolder
 - in this case any method can trigger OpenDialogBehavior so we need to decorate that method, that's all. Note that in the advice we check if `onDialogClose` is defined on annotated instance we subscribe that function.
 - also if an exception is declared by another advice then errorDialogComponent will be rendered instead.
- 
+
+> There are more examples like 'method cache', 'loading-dialog', 'exception handling'.. more to come
 
 ##### See in action
 
@@ -73,6 +74,8 @@ cd angular2-aop-showcase
 npm install
 ng serve
 ```
+
+By default subsequent calls are cached by `cache-holder.ts`, to remove cache type `delete localStorage['123123::AppComponent::ngOnInit']` on the js console.
 
 ##### Detailed Explanation
 
