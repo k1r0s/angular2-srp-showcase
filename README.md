@@ -10,9 +10,30 @@ The following example is about a component that must contain a list of autors wh
 
 ##### There we go:
 
+This repo has two branches:
+
+master -> branch with the examples
+normal-oop -> branch without advices with CCC
+
+This application example has the following features:
+
+- When the app starts should fetch a resource (writers)
+- While fetching a "loading" dialog should be placed on the UI
+- The resource should be cached, so following calls should be avoided
+- The resource should be placed as a list of writers
+- The user can click on each element to see a summary of that resource instance
+- For whatever reason selecting a writer from 'South Elvis' will throw an error
+- For whatever reason if there was an error during the selection it should be presented to the user
+- That summary is presented as a Dialog with several info
+- The user can "close" the dialog or "see posts"
+- If the user clicks on "see posts" the app should render another component
+- That component should fetch a resource (posts) related to the selected user
+- Also while fetching, a "loading" dialog should be placed on the UI
+- Also following calls to the same resource should be avoided and cached
+
 ## async calls
 
-- create a component (AppComponent)
+- create a component (WriterComponent)
 - describe a Pattern (Interface + Advice) of (component that must trigger an ajax request and receive a response)
 - create an Interface called (ResourceContainer)
 ```typescript
