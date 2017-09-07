@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdDialog, MdDialogRef } from "@angular/material"
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { InitResourceContainer, ResourceContainerBehavior } from '../../behaviors/resource-container';
 import { Post } from '../../models/post';
 import { PostRepository } from '../../services/post-repository.service';
@@ -17,10 +17,10 @@ import { User } from '../../models/user';
 })
 export class UserPostsComponent implements InitResourceContainer<Post>, CacheContainer, LoadingDialog, OnInit {
 
-  public loadingDialogRef: MdDialogRef<any>
-  public servicePath: string
-  public userPostList: Post[] = []
-  public selectedUser: User
+  public loadingDialogRef: MdDialogRef<any>;
+  public servicePath: string;
+  public userPostList: Post[] = [];
+  public selectedUser: User;
 
   constructor(
     public service: PostRepository,
@@ -30,9 +30,9 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
   ) {}
 
   public ngOnInit() {
-    this.selectedUser = this.cacheSrv.get(WritersComponent.SELECTED_USER) as User
-    if (!this.selectedUser) { return this.router.navigate(['/']) }
-    this.fetchPosts(this.selectedUser.id)
+    this.selectedUser = this.cacheSrv.get(WritersComponent.SELECTED_USER) as User;
+    if (!this.selectedUser) { return this.router.navigate(['/']); }
+    this.fetchPosts(this.selectedUser.id);
   }
 
   @ArgsCacheReader({ argDriverIndex: 0 })
@@ -40,7 +40,7 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
   @ResourceContainerBehavior
   @ArgsCacheWriter({ argDriverIndex: 0 })
   private fetchPosts(userId: number, data?: Post[]) {
-    this.userPostList = data
+    this.userPostList = data;
   }
 
   @HideLoading

@@ -6,7 +6,7 @@ import { MaterialModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { UserDialogComponent } from './components/user-dialog/user-dialog.component';
-import { ErrorDialogComponent } from "./components/error-dialog/error-dialog.component"
+import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 
 import { WritersComponent } from './components/writers/writers.component';
 import { UserRepository } from './services/user-repository.service';

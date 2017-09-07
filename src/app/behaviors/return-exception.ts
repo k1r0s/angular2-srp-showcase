@@ -1,4 +1,4 @@
-import { onException } from "kaop-ts"
+import { onException } from 'kaop-ts';
 
 
 export const ReturnException = onException(function(meta) {
@@ -6,8 +6,8 @@ export const ReturnException = onException(function(meta) {
     meta.result = {
         exception: meta.exception,
         subject: meta.args
-    }
+    };
 
-    console.info(meta.result)
-    console.warn(meta.exception.stack)
-})
+    console.log(meta.result);
+    console.warn(meta.exception.stack);
+});
