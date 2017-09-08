@@ -9,13 +9,15 @@ export interface InitResourceContainer<M = any> {
 }
 
 export const ResourceContainerBehavior = beforeMethod<InitResourceContainer>(function(meta) {
-  const source = meta.scope.service.getResource(meta.args[0] || meta.scope.servicePath);
+
+  const path = meta.args[0];
+  const source = meta.scope.service.getResource(path || meta.scope.servicePath);
 
   if (typeof meta.scope.onResourceFulfit === 'function') {
-    source.subscribe(meta.scope['onResourceFulfit'].bind(meta.scope));
+    source.then(meta.scope['onResourceFulfit'].bind(meta.scope));
   }
 
-  source.subscribe((data) => {
+  source.then((data) => {
     meta.args.push(data);
     this.next();
   });

@@ -10,7 +10,7 @@ export class UserRepository extends CommonRequest {
     super(http, 'users');
   }
 
-  public getResource(): Observable<User[]> {
+  public getResource(): Promise<User[]> {
     return super.getResource();
   }
 }

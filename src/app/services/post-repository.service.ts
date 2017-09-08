@@ -10,7 +10,7 @@ export class PostRepository extends CommonRequest {
     super(http, 'posts');
   }
 
-  public getResource(userId: string): Observable<Post[]> {
+  public getResource(userId: string): Promise<Post[]> {
     const path = `?userId=${userId}`;
     return super.getResource(path);
   }
