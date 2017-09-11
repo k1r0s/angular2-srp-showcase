@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
-import { ResourceContainerBehavior, InitResourceContainer } from '../../behaviors/resource-container';
+import { ResourceContainerFetch, ResourceContainer } from '../../behaviors/resource-container';
 import { ReturnException } from '../../behaviors/return-exception';
 import { ResourceParserBehavior } from '../../behaviors/resource-parser';
 import { CacheContainer, ArgsCacheReader, ArgsCacheWriter } from '../../behaviors/cache-holder';
@@ -17,7 +17,7 @@ import { LoadingDialog , ShowLoading, HideLoading } from '../../behaviors/loadin
   templateUrl: './writers.component.html',
   styleUrls: ['./writers.component.css']
 })
-export class WritersComponent implements LoadingDialog, InitResourceContainer<User>, CacheContainer, DialogHolder, OnInit {
+export class WritersComponent implements LoadingDialog, ResourceContainer<User>, CacheContainer, DialogHolder, OnInit {
 
   public static readonly SELECTED_USER = 'selected-user';
   public static readonly USER_LIST = 'user-list';
@@ -37,7 +37,7 @@ export class WritersComponent implements LoadingDialog, InitResourceContainer<Us
 
   @ArgsCacheReader()
   @ShowLoading
-  @ResourceContainerBehavior
+  @ResourceContainerFetch
   // @ResourceParserBehavior(WritersComponent.mapper)
   @ArgsCacheWriter()
   public ngOnInit(data?: User[]) {

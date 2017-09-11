@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdDialog, MdDialogRef } from '@angular/material';
-import { InitResourceContainer, ResourceContainerBehavior } from '../../behaviors/resource-container';
+import { MdDialog, MdDialogRef } from "@angular/material"
+import { ResourceContainer, ResourceContainerFetch } from '../../behaviors/resource-container';
 import { Post } from '../../models/post';
 import { PostRepository } from '../../services/post-repository.service';
 import { ArgsCacheReader , ArgsCacheWriter , CacheContainer } from '../../behaviors/cache-holder';
@@ -15,7 +15,7 @@ import { User } from '../../models/user';
   templateUrl: './user-posts.component.html',
   styleUrls: ['./user-posts.component.css']
 })
-export class UserPostsComponent implements InitResourceContainer<Post>, CacheContainer, LoadingDialog, OnInit {
+export class UserPostsComponent implements ResourceContainer<Post>, CacheContainer, LoadingDialog, OnInit {
 
   public loadingDialogRef: MdDialogRef<any>;
   public servicePath: string;
@@ -37,7 +37,7 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
 
   @ArgsCacheReader({ argDriverIndex: 0 })
   @ShowLoading
-  @ResourceContainerBehavior
+  @ResourceContainerFetch
   @ArgsCacheWriter({ argDriverIndex: 0 })
   private fetchPosts(userId: number, data?: Post[]) {
     this.userPostList = data;
