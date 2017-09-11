@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 import { MdDialog, MdDialogRef } from "@angular/material"
-import { InitResourceContainer } from "../../behaviors/resource-container"
+import { ResourceContainer } from "../../behaviors/resource-container"
 import { CacheContainer } from "../../behaviors/cache-holder"
 import { DialogHolder } from "../../behaviors/dialog-holder"
 import { UserDialogComponent } from "../user-dialog/user-dialog.component"
@@ -17,7 +17,7 @@ import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.compone
   templateUrl: './writers.component.html',
   styleUrls: ['./writers.component.css']
 })
-export class WritersComponent implements LoadingDialog, InitResourceContainer<User>, CacheContainer, DialogHolder, OnInit {
+export class WritersComponent implements LoadingDialog, ResourceContainer<User>, CacheContainer, DialogHolder, OnInit {
 
   public userList: User[] = []
   public dialogRef: MdDialogRef<UserDialogComponent | ErrorDialogComponent>
@@ -35,7 +35,7 @@ export class WritersComponent implements LoadingDialog, InitResourceContainer<Us
   ) {}
 
   public ngOnInit() {
-    this.setup()
+    setTimeout(() => this.setup())
   }
 
   public selectUser(user: User): void {
@@ -82,11 +82,10 @@ export class WritersComponent implements LoadingDialog, InitResourceContainer<Us
       this.cacheSrv.set(WritersComponent.USER_LIST, result)
       this.userList = result
     } else {
-      setTimeout(() => {
-        this.loadingDialogRef = this.dialogFactory.open(
-          LoadingDialogComponent, { disableClose: true }
-        )
-      })
+
+      this.loadingDialogRef = this.dialogFactory.open(
+        LoadingDialogComponent, { disableClose: true }
+      )
 
       const resourcePromise = this.service.getResource()
 

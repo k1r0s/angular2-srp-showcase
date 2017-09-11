@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from "@angular/material"
-import { InitResourceContainer } from '../../behaviors/resource-container';
+import { ResourceContainer } from '../../behaviors/resource-container';
 import { Post } from '../../models/post';
 import { PostRepository } from '../../services/post-repository.service';
 import { CacheContainer } from '../../behaviors/cache-holder';
@@ -16,7 +16,7 @@ import { LoadingDialogComponent } from '../loading-dialog/loading-dialog.compone
   templateUrl: './user-posts.component.html',
   styleUrls: ['./user-posts.component.css']
 })
-export class UserPostsComponent implements InitResourceContainer<Post>, CacheContainer, LoadingDialog, OnInit {
+export class UserPostsComponent implements ResourceContainer<Post>, CacheContainer, LoadingDialog, OnInit {
 
   public loadingDialogRef: MdDialogRef<any>
   public servicePath: string
@@ -31,7 +31,7 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
   ) {}
 
   public ngOnInit() {
-    this.setup()
+    setTimeout(() => this.setup())
   }
 
   private setup() {
@@ -46,11 +46,9 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
     if (result) {
       this.userPostList = result
     } else {
-      setTimeout(() => {
-        this.loadingDialogRef = this.dialogFactory.open(
-          LoadingDialogComponent, { disableClose: true }
-        )
-      })
+      this.loadingDialogRef = this.dialogFactory.open(
+        LoadingDialogComponent, { disableClose: true }
+      )
 
       const resourcePromise = this.service.getResource(userId.toString())
 
