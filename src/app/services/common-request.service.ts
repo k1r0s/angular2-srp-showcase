@@ -9,13 +9,11 @@ import 'rxjs/add/operator/toPromise';
 export abstract class CommonRequest {
   private api = 'https://jsonplaceholder.typicode.com';
   private headers = new Headers({ 'Accept': 'application/json' });
-  private curr: Promise<any[]>;
 
   constructor(private http: Http, private resource: string) {}
 
   public getResource(path = ''): Promise<any[]> {
-    if (this.curr) { return this.curr; }
-    return this.curr = this.http
+    return this.http
         .get(`${this.api}/${this.resource}/${path}`)
         .share()
         .delay(2000)

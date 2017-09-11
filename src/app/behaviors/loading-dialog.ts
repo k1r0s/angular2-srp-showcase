@@ -12,12 +12,9 @@ export interface LoadingDialog {
 
 export const ShowLoading = beforeMethod<LoadingDialog>(function(meta) {
 
-  // avoid ExpressionChangedAfterItHasBeenCheckedError
-  setTimeout(() => {
-    meta.scope.loadingDialogRef = meta.scope.dialogFactory.open(
-      LoadingDialogComponent, { disableClose: true }
-    );
-  });
+  meta.scope.loadingDialogRef = meta.scope.dialogFactory.open(
+    LoadingDialogComponent, { disableClose: true }
+  );
 });
 
 export const HideLoading = beforeMethod<LoadingDialog>(function(meta) {

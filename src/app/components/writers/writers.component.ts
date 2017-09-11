@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { ResourceContainerFetch, ResourceContainer } from '../../behaviors/resource-container';
 import { ReturnException } from '../../behaviors/return-exception';
-import { ResourceParserBehavior } from '../../behaviors/resource-parser';
 import { CacheContainer, ArgsCacheReader, ArgsCacheWriter } from '../../behaviors/cache-holder';
 import { DialogHolder, OpenDialogBehavior } from '../../behaviors/dialog-holder';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
@@ -35,26 +34,22 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
     private router: Router
   ) {}
 
+  public ngOnInit() {
+    setTimeout(() => this.setup());
+  }
+
   @ArgsCacheReader()
   @ShowLoading
   @ResourceContainerFetch
-  // @ResourceParserBehavior(WritersComponent.mapper)
   @ArgsCacheWriter()
-  public ngOnInit(data?: User[]) {
+  public setup(data?: User[]) {
     this.cacheSrv.set(WritersComponent.USER_LIST, data);
     this.userList = data;
+
   }
 
   @HideLoading
   public onResourceFulfit() {}
-
-  // private static mapper = (user: User) => {
-  //   // for whatever reason
-  //   delete user.username
-  //   delete user.company
-  //   delete user.email
-  //   return user
-  // }
 
   @ReturnException
   @OpenDialogBehavior(UserDialogComponent)

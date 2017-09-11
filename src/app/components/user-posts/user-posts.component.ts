@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { MdDialog, MdDialogRef } from "@angular/material"
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { ResourceContainer, ResourceContainerFetch } from '../../behaviors/resource-container';
 import { Post } from '../../models/post';
 import { PostRepository } from '../../services/post-repository.service';
@@ -30,6 +30,10 @@ export class UserPostsComponent implements ResourceContainer<Post>, CacheContain
   ) {}
 
   public ngOnInit() {
+    setTimeout(() => this.setup());
+  }
+
+  public setup() {
     this.selectedUser = this.cacheSrv.get(WritersComponent.SELECTED_USER) as User;
     if (!this.selectedUser) { return this.router.navigate(['/']); }
     this.fetchPosts(this.selectedUser.id);
