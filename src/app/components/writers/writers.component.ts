@@ -35,27 +35,7 @@ export class WritersComponent implements LoadingDialog, InitResourceContainer<Us
   ) {}
 
   public ngOnInit() {
-
-    const key: string = `${WritersComponent.name}||ngOnInit||`
-    const result = this.cacheSrv.get(key)
-    if (result) {
-      this.cacheSrv.set(WritersComponent.USER_LIST, result)
-      this.userList = result
-    } else {
-      setTimeout(() => {
-        this.loadingDialogRef = this.dialogFactory.open(
-          LoadingDialogComponent, { disableClose: true }
-        )
-      })
-
-      const resourcePromise = this.service.getResource().toPromise()
-
-      resourcePromise.then((data) => {
-        this.cacheSrv.set(key, data)
-        this.userList = data
-        this.loadingDialogRef.close()
-      })
-    }
+    this.setup()
   }
 
   public selectUser(user: User): void {
@@ -92,6 +72,29 @@ export class WritersComponent implements LoadingDialog, InitResourceContainer<Us
     if(selectedUser){
       this.cacheSrv.set(WritersComponent.SELECTED_USER, selectedUser)
       this.router.navigate([`/posts/${selectedUser.name.toLowerCase().replace(" ", "-")}`])
+    }
+  }
+
+  private setup() {
+    const key: string = `${WritersComponent.name}||ngOnInit||`
+    const result = this.cacheSrv.get(key)
+    if (result) {
+      this.cacheSrv.set(WritersComponent.USER_LIST, result)
+      this.userList = result
+    } else {
+      setTimeout(() => {
+        this.loadingDialogRef = this.dialogFactory.open(
+          LoadingDialogComponent, { disableClose: true }
+        )
+      })
+
+      const resourcePromise = this.service.getResource()
+
+      resourcePromise.then((data) => {
+        this.cacheSrv.set(key, data)
+        this.userList = data
+        this.loadingDialogRef.close()
+      })
     }
   }
 }

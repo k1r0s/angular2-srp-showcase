@@ -31,6 +31,10 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
   ) {}
 
   public ngOnInit() {
+    this.setup()
+  }
+
+  private setup() {
     this.selectedUser = this.cacheSrv.get(WritersComponent.SELECTED_USER) as User
     if (!this.selectedUser) { return this.router.navigate(['/']) }
     this.fetchPosts(this.selectedUser.id)
@@ -48,7 +52,7 @@ export class UserPostsComponent implements InitResourceContainer<Post>, CacheCon
         )
       })
 
-      const resourcePromise = this.service.getResource(userId.toString()).toPromise()
+      const resourcePromise = this.service.getResource(userId.toString())
 
       resourcePromise.then((data) => {
         this.cacheSrv.set(key, data)
