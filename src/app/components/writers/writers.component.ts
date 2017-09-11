@@ -38,16 +38,6 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
     setTimeout(() => this.setup());
   }
 
-  @ArgsCacheReader()
-  @ShowLoading
-  @ResourceContainerFetch
-  @ArgsCacheWriter()
-  public setup(data?: User[]) {
-    this.cacheSrv.set(WritersComponent.USER_LIST, data);
-    this.userList = data;
-
-  }
-
   @HideLoading
   public onResourceFulfit() {}
 
@@ -67,5 +57,15 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
       this.cacheSrv.set(WritersComponent.SELECTED_USER, selectedUser);
       this.router.navigate([`/posts/${selectedUser.name.toLowerCase().replace(' ', '-')}`]);
     }
+  }
+
+  @ArgsCacheReader()
+  @ShowLoading
+  @ResourceContainerFetch
+  @ArgsCacheWriter()
+  private setup(data?: User[]) {
+    this.cacheSrv.set(WritersComponent.USER_LIST, data);
+    this.userList = data;
+
   }
 }

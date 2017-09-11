@@ -33,12 +33,6 @@ export class UserPostsComponent implements ResourceContainer<Post>, CacheContain
     setTimeout(() => this.setup());
   }
 
-  public setup() {
-    this.selectedUser = this.cacheSrv.get(WritersComponent.SELECTED_USER) as User;
-    if (!this.selectedUser) { return this.router.navigate(['/']); }
-    this.fetchPosts(this.selectedUser.id);
-  }
-
   @ArgsCacheReader({ argDriverIndex: 0 })
   @ShowLoading
   @ResourceContainerFetch
@@ -49,4 +43,10 @@ export class UserPostsComponent implements ResourceContainer<Post>, CacheContain
 
   @HideLoading
   public onResourceFulfit () {}
+
+  private setup() {
+    this.selectedUser = this.cacheSrv.get(WritersComponent.SELECTED_USER) as User;
+    if (!this.selectedUser) { return this.router.navigate(['/']); }
+    this.fetchPosts(this.selectedUser.id);
+  }
 }
