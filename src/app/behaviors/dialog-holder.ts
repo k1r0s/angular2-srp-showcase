@@ -8,7 +8,7 @@ export interface DialogHolder {
   onDialogClose?(result?: any): void;
 }
 
-export const OpenDialogBehavior = (dialogComponent, errorDialogComponent = ErrorDialogComponent) => {
+export const OpenDialog = (dialogComponent, errorDialogComponent = ErrorDialogComponent) => {
   return afterMethod<DialogHolder>(function(meta) {
 
     meta.scope.dialogRef = meta.scope.dialogFactory.open(
@@ -23,7 +23,8 @@ export const OpenDialogBehavior = (dialogComponent, errorDialogComponent = Error
   });
 };
 
-export const CloseDialogBehavior = () => {
+// optional
+export const CloseDialog = () => {
   return afterMethod<DialogHolder>(function(meta) {
     meta.scope.dialogRef.close(meta.result);
   });

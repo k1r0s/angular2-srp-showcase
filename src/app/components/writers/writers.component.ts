@@ -4,7 +4,7 @@ import { MdDialog, MdDialogRef } from '@angular/material';
 import { ResourceContainerFetch, ResourceContainer } from '../../behaviors/resource-container';
 import { ReturnException } from '../../behaviors/return-exception';
 import { CacheContainer, ArgsCacheReader, ArgsCacheWriter } from '../../behaviors/cache-holder';
-import { DialogHolder, OpenDialogBehavior } from '../../behaviors/dialog-holder';
+import { DialogHolder, OpenDialog } from '../../behaviors/dialog-holder';
 import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 import { UserRepository } from '../../services/user-repository.service';
 import { CommonCache } from '../../services/common-cache.service';
@@ -42,7 +42,7 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
   public onResourceFulfit() {}
 
   @ReturnException
-  @OpenDialogBehavior(UserDialogComponent)
+  @OpenDialog(UserDialogComponent)
   public selectUser(user: User): User {
 
     if (user.address.city === this.forbiddenCity) {
