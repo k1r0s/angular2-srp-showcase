@@ -25,7 +25,6 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
   public forbiddenCity = 'South Elvis'
 
   public static readonly SELECTED_USER = 'selected-user'
-  public static readonly USER_LIST = 'user-list'
 
   constructor(
     public service: UserRepository,
@@ -79,7 +78,6 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
     const key: string = `${WritersComponent.name}||ngOnInit||`
     const result = this.cacheSrv.get(key)
     if (result) {
-      this.cacheSrv.set(WritersComponent.USER_LIST, result)
       this.userList = result
     } else {
 
