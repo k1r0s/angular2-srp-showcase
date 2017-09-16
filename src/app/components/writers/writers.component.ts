@@ -44,11 +44,9 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
   @ReturnException
   @OpenDialog(UserDialogComponent)
   public selectUser(user: User): User {
-
     if (user.address.city === this.forbiddenCity) {
       throw new Error(`We cannot retrieve info from people settled in ${user.address.city} >.<'`);
     }
-
     return user;
   }
 
@@ -64,8 +62,6 @@ export class WritersComponent implements LoadingDialog, ResourceContainer<User>,
   @ResourceContainerFetch
   @ArgsCacheWriter()
   private setup(data?: User[]) {
-    this.cacheSrv.set(WritersComponent.USER_LIST, data);
     this.userList = data;
-
   }
 }
