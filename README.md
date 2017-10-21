@@ -110,4 +110,4 @@ By default subsequent calls are cached by `cache-holder.ts`, look over applicati
 
 ##### Detailed Explanation
 
-... todo
+https://hackernoon.com/angular-tutorial-separation-of-concerns-using-es7-decorators-ed6c9756265
